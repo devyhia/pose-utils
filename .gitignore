@@ -1,0 +1,17 @@
+venv
+dataset
+__pycache__
+build
+dist
+packages
+tum_nlp.egg-info
+tum.egg-info
+*.txt
+*.npy
+.vscode
+tags
+news
+tags-te
+*.ipynb_checkpoints
+.idea
+html/
