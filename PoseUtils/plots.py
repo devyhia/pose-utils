@@ -10,6 +10,26 @@ import mpl_toolkits.mplot3d.axes3d as p3
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 
+def plot_line(ax, line, *args, **kwargs):
+    """
+    Plot a 2D or 3D line given a 2x2 or 2x3 matrices.
+
+    Args:
+        ax: 2D or 3D Axis to draw into.
+    """
+    if line.shape[1] == 2:
+        params = (line[:, 0], line[:, 1])
+    else:
+        params = (line[:, 0], line[:, 1], line[:, 2])
+    ax.plot(*params, *args, **kwargs)
+
+
+def get_3d_axes():
+    fig = plt.figure(figsize=(5, 5))
+    ax = p3.Axes3D(fig)
+    return fig, ax
+
+
 def plotTrajectories(trajectory_list, legends=None, plot_start=False, plot_end=False):
     """
     Plots a 3D visualization of multiple trajectories.

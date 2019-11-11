@@ -5,6 +5,17 @@ Helpers functions to solve common pose-related problems-- i.e. converting from l
 import numpy as np
 
 
+def line_from_points(p1, p2):
+    """
+    Stacks two points to make a line.
+
+    Args:
+        p1: 1x2 or 2x1 numpy array with two elements.
+        p2: 1x2 or 2x1 numpy array with two elements.
+    """
+    return np.vstack([p1.flatten(), p2.flatten()])
+
+
 def flip_coordinate_system(T: np.ndarray, axis=2) -> np.ndarray:
     """
     Flips between coordinate system convetions (right-handed and left-handed).
@@ -46,7 +57,7 @@ def line_line_intersection(p1, p2, p3, p4) -> np.ndarray:
     """
     p13 = p1 - p3
     p43 = p4 - p3
-    eps = 1e-8
+    eps = 2.2204e-16  # This number is quoted from MATLAB "eps".
 
     if np.all(p43 < eps):
         raise Exception("Could not find an intersection")
