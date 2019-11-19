@@ -131,11 +131,14 @@ def read_openpose_json(filename: str) -> List[JointDescriptor]:
 
 def draw_pose(
     joints: List[JointDescriptor],
-    bones_of_interest: List[OpenPoseBones] = BonesOfInterest,
+    bones_of_interest: List[OpenPoseBones] = None,
     ax=None,
     showLegend=False,
     bonesWidth=1,
 ):
+    if not bones_of_interest:
+        bones_of_interest = BonesOfInterest
+
     if not ax:
         ax = plt.figure()
 

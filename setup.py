@@ -8,5 +8,6 @@ setup(
         "numpy==1.17.3",
         "transformations==2019.4.22",
         "matplotlib==3.1.1",
+        "more-itertools==7.2.0",
     ],
 )

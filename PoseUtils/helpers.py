@@ -3,6 +3,8 @@ Helpers functions to solve common pose-related problems-- i.e. converting from l
 """
 
 import numpy as np
+from numpy import sqrt, ones, array
+from numpy.linalg import solve
 
 
 def line_from_points(p1, p2):
@@ -87,3 +89,39 @@ def line_line_intersection(p1, p2, p3, p4) -> np.ndarray:
     pb = p3 + mub * p43
 
     return (pa + pb) / 2
+
+
+def intersection_point_of_3d_lines(PA: np.ndarray, PB: np.ndarray) -> np.ndarray:
+    """
+    Find intersection points closet to all given lines (in a least squares sense).
+
+    This implementation is a direct translation of the Matlab implementation provided by: https://de.mathworks.com/matlabcentral/fileexchange/37192-intersection-point-of-lines-in-3d-space
+
+    Args:
+        PA: Nx3 Numpy array. Starting points for each line.
+        PB: Nx3 Numpy array. Ending points for each line.
+
+    Returns:
+        3x1 Numpy Array. Intersection point for all lines.
+    """
+    Si = PB - PA  # N lines described as vectors
+    Si_Norm = np.sqrt(np.sum(Si ** 2, axis=1))
+    ni = Si / Si_Norm[:, np.newaxis]  # Normalize vectors (each)
+    nx = ni[:, 0]
+    ny = ni[:, 1]
+    nz = ni[:, 2]
+
+    SXX = sum(nx ** 2 - 1)
+    SYY = sum(ny ** 2 - 1)
+    SZZ = sum(nz ** 2 - 1)
+    SXY = sum(nx * ny)
+    SXZ = sum(nx * nz)
+    SYZ = sum(ny * nz)
+    S = array([[SXX, SXY, SXZ], [SXY, SYY, SYZ], [SXZ, SYZ, SZZ]])
+    CX = sum(PA[:, 0] * (nx ** 2 - 1) + PA[:, 1] * (nx * ny) + PA[:, 2] * (nx * nz))
+    CY = sum(PA[:, 0] * (nx * ny) + PA[:, 1] * (ny ** 2 - 1) + PA[:, 2] * (ny * nz))
+    CZ = sum(PA[:, 0] * (nx * nz) + PA[:, 1] * (ny * nz) + PA[:, 2] * (nz ** 2 - 1))
+    C = array([CX, CY, CZ])
+    P_intersect = solve(S, C).T
+
+    return P_intersect
