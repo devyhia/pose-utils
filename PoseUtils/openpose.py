@@ -161,6 +161,7 @@ def draw_pose(
         joint = joint_lookup[joint_type]
         ax.scatter(joint.x, joint.y, label=joint.joint.name)
 
-    ax.legend()
+    if showLegend:
+        ax.legend()
 
     return ax
