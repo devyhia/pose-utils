@@ -103,6 +103,25 @@ def intersection_point_of_3d_lines(PA: np.ndarray, PB: np.ndarray) -> np.ndarray
 
     Returns:
         3x1 Numpy Array. Intersection point for all lines.
+
+    Example:
+        The following figures illustrate 13 rays, each passing by (or around) the origin point (i.e. `[0,0,0]`).
+
+        ### No Error Example
+        In this image, we have 13 lines, all of which are crossing the origin. Our expectation is that the returned intersection point should be the origin.
+        .. image:: imgs/intersection-no-error.png
+
+        ### Guassian Noise Example
+        When adding gaussian noise to start and end points of the line segments (that describe the rays), the function is still fairly resistent to the noise.
+        In the following example, we added noise with a zero mean and a 0.1 standard deviation.
+
+        .. image:: imgs/intersection-tiny-error.png
+
+        We further added more gaussian nose with zero mean and 0.5 standard deviation to obtain the following:
+
+        .. image:: imgs/intersection-small-error.png
+
+        In all three cases, the function returns the origin as the intersection point.
     """
     Si = PB - PA  # N lines described as vectors
     Si_Norm = np.sqrt(np.sum(Si ** 2, axis=1))
